@@ -2,7 +2,9 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace InvoiceAPIChallenge.CustomAttributes
-{
+{/// <summary>
+ /// Enforces a date constraint - The date must be set in the present or the past, not the future.
+ /// </summary>
     public class NoLaterThanTodayAttribute : ValidationAttribute
     {
         public NoLaterThanTodayAttribute()
