@@ -16,6 +16,16 @@ namespace InvoiceAPIChallenge.Controllers
     public class InvoiceController(ILogger<InvoiceController> logger, IExchangeRateService exchangeRateService) : ControllerBase
     {
 
+        /// <summary>
+        /// Used to check that the API is running
+        /// </summary>
+        /// <returns>A string: sort of a status message</returns>
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok("The API is online and running!");
+        }
+
 
         /// <summary>
         /// Calculates the tax and total amount for a given invoice based on the exchange rate on a specific date.
@@ -48,12 +58,12 @@ namespace InvoiceAPIChallenge.Controllers
                     TaxAmount = Math.Round(taxAmount, 2),
                     GrandTotal = Math.Round(grandTotal, 2),
                     ExchangeRate = exchangeRate
-                }; 
+                };
                 return Ok(output);
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Error calculating invoice"); 
+                logger.LogError(ex, "Error calculating invoice");
                 return BadRequest(ex.Message);
             }
         }
