@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 namespace InvoiceAPIChallenge.Services
 {
     /// <summary>
-    /// Create the service interface to allow Unit Test. 
+    /// Create the service interface to allow Unit Testing. 
     /// This is needed because Moq only handles parameterless constructors.
     /// </summary>
     /// 
@@ -28,12 +28,13 @@ namespace InvoiceAPIChallenge.Services
     /// <summary>
     /// Service class for fetching exchange rates from an external API
     /// </summary>
-    /// <param name="httpClient"></param>
-    /// <param name="settings"></param>
+    /// <param name="httpClient">Injected from the main class</param>
+    /// <param name="settings">Injected from the main class</param>
     public class ExchangeRateService(HttpClient httpClient, IOptions<ExternalSettings> settings) : IExchangeRateService
     {
         private readonly ExternalSettings exchangeApiInfo = settings?.Value ??
-            throw new ArgumentNullException(nameof(settings));
+            throw new ArgumentNullException(nameof(settings)); 
+        
 
 
         public async Task<decimal> GetExchangeRate(string baseCurrency, string targetCurrency, DateTime date)
@@ -43,6 +44,7 @@ namespace InvoiceAPIChallenge.Services
             {
                 return 1m;
             }
+            ArgumentNullException.ThrowIfNull(httpClient);
 
             // Construct the request URI using settings and parameters
             string requestUri = $"{exchangeApiInfo.ExchangeApiUrl}{date:yyyy-MM-dd}?access_key={exchangeApiInfo.ExchangeApiKey}&base={baseCurrency}&symbols={targetCurrency}";
